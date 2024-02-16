@@ -1,0 +1,3 @@
+*\__pycache__
+Sample_files/*
+!Sample_files/sample.csv
