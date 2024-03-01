@@ -102,8 +102,11 @@ class CSV(Main):
         container = {}
         is_different = False
         header = None
-
-        with open(fpath1, "r", encoding=encoding) as f1:
+        if isinstance(encoding, list):
+            [encoding1, encoding2] = encoding
+        else:
+            encoding1 = encoding2 = encoding
+        with open(fpath1, "r", encoding=encoding1) as f1:
             f1_reader = reader(f1)
             for idx, row in enumerate(f1_reader):
                 if not idx and skip_header:
@@ -115,7 +118,7 @@ class CSV(Main):
                 else:
                     container[unique_field]["count1"] += 1
 
-        with open(fpath2, "r", encoding=encoding) as f2:
+        with open(fpath2, "r", encoding=encoding2) as f2:
             f2_reader = reader(f2)
             for idx, row in enumerate(f2_reader):
                 if not idx and skip_header:
@@ -134,6 +137,9 @@ class CSV(Main):
                 else:
                     container[unique_field] = {"data2": row, "matched": False, "count2": 1, "contains_data": ["data2"]}
                     is_different = True
+
+        if not container:
+            self.log.info("There is not Difference Data. Both Files have Same Data.")
 
         if not output_diff_path:
             return is_different
