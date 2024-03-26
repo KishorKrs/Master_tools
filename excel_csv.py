@@ -46,17 +46,12 @@ class CSV(Main):
 
     def compare_row(self, row1, row2):
         idx = []
-        if len(row1) >= len(row2):
-            data_row1 = row1
-            data_row2 = row2
-        else:
-            data_row1 = row2
-            data_row2 = row1
+        max_data_length = max(len(row1), len(row2))
 
-        for i, val in enumerate(data_row1):
+        for i in range(1, max_data_length):
             try:
-                if data_row2[i] != val:
-                    idx.append(i)
+                if row1[i] != row2[i]:
+                    raise
             except:
                 idx.append(i)
 
